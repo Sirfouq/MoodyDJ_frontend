@@ -1,7 +1,11 @@
 import spotifyIcon from './assets/spotify-color-svgrepo-com.svg';
 
 
-export const LoginCard = () => {
+interface LoginCardProps {
+    onClick: () => void
+}
+
+export const LoginCard = ({ onClick }: LoginCardProps) => {
 
     return (
 
@@ -12,20 +16,17 @@ export const LoginCard = () => {
             <p className="text-gray-500 mb-8">
                 Log in to start creating playlists from your mood.
             </p>
-            <LoginButton />
+            <LoginButton onClick={onClick} />
         </div>
     );
 };
-const LoginButton = () => {
+const LoginButton = ({ onClick }: LoginCardProps) => {
     return (
         <button
-
-            onClick={() => alert('Button clicked!')}
+            onClick={() => onClick()}
             className="inline-flex items-center justify-center gap-3 bg-green-600 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-md hover:bg-green-800 transition-colors duration-300">
             <img src={spotifyIcon} alt="Spotify" className="w-6 h-6" />
-
             Login with Spotify
-
         </button>
     );
 };
