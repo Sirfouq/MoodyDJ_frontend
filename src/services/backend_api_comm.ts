@@ -21,8 +21,3 @@ export const check_auth_status=async () : Promise<AuthStatusProps> =>{
     }
     
 }
-
-// export const login_request = ()=>{
-//     const response = fetch(`${API_URL}/login`).then((response)=>{return response.status})
-//     console.log(response)
-// }
