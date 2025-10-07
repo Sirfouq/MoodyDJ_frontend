@@ -1,11 +1,11 @@
 import spotifyIcon from './assets/spotify-color-svgrepo-com.svg';
-
+import { API_ENDPOINTS } from './util/config';
 
 interface LoginCardProps {
     onClick: () => void
 }
 
-export const LoginCard = ({ onClick }: LoginCardProps) => {
+export const LoginCard = () => {
 
     return (
 
@@ -16,17 +16,20 @@ export const LoginCard = ({ onClick }: LoginCardProps) => {
             <p className="text-gray-500 mb-8">
                 Log in to start creating playlists from your mood.
             </p>
-            <LoginButton onClick={onClick} />
+            <LoginButton />
         </div>
     );
 };
-const LoginButton = ({ onClick }: LoginCardProps) => {
+const LoginButton = () => {
+
+
     return (
-        <button
-            onClick={() => onClick()}
-            className="inline-flex items-center justify-center gap-3 bg-green-600 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-md hover:bg-green-800 transition-colors duration-300">
-            <img src={spotifyIcon} alt="Spotify" className="w-6 h-6" />
-            Login with Spotify
-        </button>
+
+        <a href={API_ENDPOINTS.LOGIN}>
+            <div className="inline-flex items-center justify-center gap-3 bg-green-600 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-md hover:bg-green-800 transition-colors duration-300">
+                <img src={spotifyIcon} alt="Spotify" className="w-6 h-6" />
+                Login with Spotify
+            </div>
+        </a>
     );
 };
