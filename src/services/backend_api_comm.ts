@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "@/util/config"
+import { API_ENDPOINTS } from "@/services/config"
 interface AuthStatusProps {
     isLoggedIn :boolean
 }

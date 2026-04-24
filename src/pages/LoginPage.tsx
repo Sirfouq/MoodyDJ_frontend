@@ -1,9 +1,9 @@
-import spotifyIcon from './assets/spotify-color-svgrepo-com.svg';
-import { API_ENDPOINTS } from './util/config';
+import spotifyIcon from '@/assets/spotify-color-svgrepo-com.svg';
+import { API_ENDPOINTS } from '../services/config';
 
-interface LoginCardProps {
-    onClick: () => void
-}
+// interface LoginCardProps {
+//     onClick: () => void
+// }
 
 export const LoginCard = () => {
 
