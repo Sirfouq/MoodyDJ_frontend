@@ -1,14 +1,19 @@
 import { Textarea } from '@/components/ui/textarea'
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react';
+import { generate_playlist, type Track } from '@/services/backend_api_comm';
 
 export const HomePage = () => {
 
   const [input, setInput] = useState('');
   const isVisible = input.trim() !== '';
+  const [tracks, setTracks] = useState<Track[]>([])
 
-  const handleSubmit = () => {
-    alert(input)
+
+  const handleSubmit = async () => {
+    setTracks([])
+    const tracks = await generate_playlist(input)
+    setTracks(tracks)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -17,6 +22,7 @@ export const HomePage = () => {
       handleSubmit();
     }
   }
+
   return (
     <div className='flex flex-col items-center justify-center  w-full px-4'>
       <div className='relative w-full max-w-3xl'>
@@ -30,6 +36,13 @@ export const HomePage = () => {
           <ArrowRight size={20} />
         </button>
       </div>
+      {/* {tracks.map((track) => (
+        <p key={track.uri}>
+          {track.name}
+          {track.artists.join(',')} 
+        </p>
+      ))} */}
+
     </div>
   )
 }
