@@ -1,6 +1,7 @@
 import { API_ENDPOINTS } from "@/services/config"
 interface AuthStatusProps {
     isLoggedIn :boolean
+    access_token? : string
 }
 
 export interface Track{
@@ -24,7 +25,7 @@ export const check_auth_status=async () : Promise<AuthStatusProps> =>{
     }
     catch(error:any){
         console.error('Failed to fetch',error)
-        return{isLoggedIn : false}
+        return{isLoggedIn : false }
 
     }
     

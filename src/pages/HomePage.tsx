@@ -1,13 +1,20 @@
 import { Textarea } from '@/components/ui/textarea'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { ArrowRight } from 'lucide-react';
 import { generate_playlist, type Track } from '@/services/backend_api_comm';
+import useSpotifyPlayer from '@/hooks/useSpotifyPlayer';
+import { AuthContext } from '@/contexts/AuthContext';
+
 
 export const HomePage = () => {
 
   const [input, setInput] = useState('');
   const isVisible = input.trim() !== '';
   const [tracks, setTracks] = useState<Track[]>([])
+  const { access_token } = useContext(AuthContext)
+  const { player, deviceId } = useSpotifyPlayer(access_token ?? '')
+
+
 
 
   const handleSubmit = async () => {
@@ -36,12 +43,11 @@ export const HomePage = () => {
           <ArrowRight size={20} />
         </button>
       </div>
-      {/* {tracks.map((track) => (
-        <p key={track.uri}>
-          {track.name}
-          {track.artists.join(',')} 
-        </p>
-      ))} */}
+
+
+      {`Device Id : ${deviceId}`}
+
+
 
     </div>
   )

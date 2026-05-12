@@ -5,7 +5,8 @@ import { check_auth_status } from '@/services/backend_api_comm'
 
 interface AuthContextType {
     isLoggedIn: boolean,
-    isLoading: boolean
+    isLoading: boolean,
+    access_token: string | null
 }
 
 interface AuthProviderProps {
@@ -13,11 +14,12 @@ interface AuthProviderProps {
 }
 
 
-export const AuthContext = createContext<AuthContextType>({ isLoggedIn: false, isLoading: true })
+export const AuthContext = createContext<AuthContextType>({ isLoggedIn: false, isLoading: true, access_token: '' })
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
+    const [access_token, setAccessToken] = useState('')
 
     const check_status = async () => {
         try {
@@ -25,6 +27,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
             if (data) {
                 setIsLoggedIn(data.isLoggedIn)
+                setAccessToken(data.access_token ?? '')
             }
         }
         catch (error) {
@@ -42,7 +45,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, isLoading }}>
+        <AuthContext.Provider value={{ isLoggedIn, isLoading, access_token }}>
             {children}
         </AuthContext.Provider>
     )
