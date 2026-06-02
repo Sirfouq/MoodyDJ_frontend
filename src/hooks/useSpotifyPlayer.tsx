@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 
 const useSpotifyPlayer = (access_token: string) => {
@@ -9,18 +9,23 @@ const useSpotifyPlayer = (access_token: string) => {
     const [current_track, setCurrentTrack] = useState<Spotify.Track | null>(null)
     const [isActive, setIsActive] = useState(false)
     const [isPaused, setIsPaused] = useState(false)
+    const [position, setPosition] = useState(0)
+
+    const playerRef = useRef<Spotify.Player | null>(null)
+
+
 
 
     useEffect(() => {
 
         if (!access_token) return
 
-        console.log('Effect running with token:', access_token)
-
-        const script = document.createElement("script");
-        script.src = "https://sdk.scdn.co/spotify-player.js";
-        script.async = true;
-        document.body.appendChild(script);
+        if (!document.querySelector('script[src="https://sdk.scdn.co/spotify-player.js"]')) {
+            const script = document.createElement("script");
+            script.src = "https://sdk.scdn.co/spotify-player.js";
+            script.async = true;
+            document.body.appendChild(script);
+        }
 
         window.onSpotifyWebPlaybackSDKReady = () => {
             const token = access_token
@@ -53,6 +58,7 @@ const useSpotifyPlayer = (access_token: string) => {
 
                 setCurrentTrack(state.track_window.current_track);
                 setIsPaused(state.paused);
+                setPosition(state.position)
 
                 player.getCurrentState().then(state => {
                     (!state) ? setIsActive(false) : setIsActive(true)
@@ -65,17 +71,33 @@ const useSpotifyPlayer = (access_token: string) => {
             // });
 
 
-
+            playerRef.current = player
             setPlayer(player)
             player.connect();
         }
-        return () => { player?.disconnect() }
+        return () => { playerRef.current?.disconnect() }
 
     }, [access_token])
 
 
+    useEffect(() => {
+        if (!isPaused) {
+            const interval = setInterval(() => {
+                setPosition((position) => position + 1000)
+            }, 1000)
+            return () => clearInterval(interval)
+        }
 
-    return { player, deviceId, isPaused, isActive, current_track }
+    }, [isPaused])
+
+    const seek = (ms: number) => {
+        playerRef.current?.seek(ms)
+        setPosition(ms)
+    }
+
+
+
+    return { player, deviceId, isPaused, isActive, current_track, position, seek }
 
 }
 

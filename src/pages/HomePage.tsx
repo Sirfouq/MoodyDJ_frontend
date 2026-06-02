@@ -10,7 +10,7 @@ export const HomePage = () => {
 
   const [tracks, setTracks] = useState<Track[]>([])
   const { access_token } = useContext(AuthContext)
-  const { player, deviceId, isPaused, isActive, current_track } = useSpotifyPlayer(access_token ?? '')
+  const { player, deviceId, isPaused, isActive, current_track, position, seek } = useSpotifyPlayer(access_token ?? '')
 
 
 
@@ -37,7 +37,9 @@ export const HomePage = () => {
       <PlayerController player={player}
         isActive={isActive}
         isPaused={isPaused}
-        current_track={current_track}></PlayerController>
+        current_track={current_track}
+        position={position}
+        seek={seek}></PlayerController>
 
 
 
