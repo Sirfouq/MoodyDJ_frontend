@@ -10,6 +10,7 @@ const useSpotifyPlayer = (access_token: string) => {
     const [isActive, setIsActive] = useState(false)
     const [isPaused, setIsPaused] = useState(false)
     const [position, setPosition] = useState(0)
+    const [volume, setVolume] = useState(0.5)
 
     const playerRef = useRef<Spotify.Player | null>(null)
 
@@ -95,9 +96,14 @@ const useSpotifyPlayer = (access_token: string) => {
         setPosition(ms)
     }
 
+    const adjustVolume = (volume: number) => {
+        playerRef.current?.setVolume(volume)
+        setVolume(volume)
+    }
 
 
-    return { player, deviceId, isPaused, isActive, current_track, position, seek }
+
+    return { player, deviceId, isPaused, isActive, current_track, position, volume, seek, adjustVolume }
 
 }
 

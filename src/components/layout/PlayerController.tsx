@@ -8,11 +8,13 @@ interface PlayerControllerProps {
     isActive: boolean,
     current_track: Spotify.Track | null
     position: number
+    volume: number
     seek: (ms: number) => void
+    adjustVolume: (volume: number) => void
 }
 
 
-export const PlayerController = ({ player, isPaused, isActive, current_track, position, seek }: PlayerControllerProps) => {
+export const PlayerController = ({ player, isPaused, isActive, current_track, position, volume, seek, adjustVolume }: PlayerControllerProps) => {
 
     const [seekPosition, setSeekPosition] = useState<number | null>(null)
     return (
@@ -72,8 +74,17 @@ export const PlayerController = ({ player, isPaused, isActive, current_track, po
                 </div>
 
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-32 justify-end">
+                <Slider
+                    value={[volume]}
+                    max={1}
+                    step={0.01}
+                    className="w-full [&_[data-slot=slider-track]]:bg-neutral-600
+  [&_[data-slot=slider-range]]:bg-white  [&_[data-slot=slider-thumb]]:border-white
+  "
+                    onValueChange={(volume) => adjustVolume(volume[0])}>
 
+                </Slider>
 
 
             </div>
