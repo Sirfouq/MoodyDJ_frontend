@@ -4,14 +4,15 @@ import useSpotifyPlayer from '@/hooks/useSpotifyPlayer';
 import { AuthContext } from '@/contexts/AuthContext';
 import VibeInput from '@/components/layout/VibeInput';
 import { PlayerController } from '@/components/layout/PlayerController';
+import { usePlaylist } from '@/hooks/usePlaylist';
 
 
 export const HomePage = () => {
 
-  const [tracks, setTracks] = useState<Track[]>([])
+
   const { access_token } = useContext(AuthContext)
   const { player, deviceId, isPaused, isActive, current_track, position, volume, seek, adjustVolume } = useSpotifyPlayer(access_token ?? '')
-
+  const { tracks, error, isLoading, generatePlaylist } = usePlaylist()
 
 
 
@@ -20,9 +21,7 @@ export const HomePage = () => {
   return (
     <div className='flex flex-col items-center justify-center  w-full px-4'>
       <VibeInput onSubmit={async (input) => {
-        setTracks([])
-        const tracks = await generate_playlist(input)
-        setTracks(tracks)
+        generatePlaylist(input)
       }}></VibeInput>
 
 

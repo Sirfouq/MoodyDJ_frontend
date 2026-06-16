@@ -53,7 +53,7 @@ function Slider({
           key={index}
           className="block size-4 shrink-0 rounded-full
   border border-primary bg-white
-  shadow-sm ring-white/2  0
+  shadow-sm ring-white/20
   transition-[color,box-shadow,transform]
    hover:ring-4 hover:scale-125
   focus-visible:ring-4

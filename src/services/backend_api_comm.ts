@@ -50,8 +50,8 @@ export const generate_playlist = async(user_input : string,
         return data
 
     }
-    catch(error:any){
+    catch(error:unknown){
         console.error('Failed to fetch', error)
-        return []
+        throw error
     }
 }
