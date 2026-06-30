@@ -40,3 +40,24 @@
 .read-the-docs {
   color: #888;
 }
+
+
+@keyframes equalize {
+    0%, 100% { transform: scaleY(0.2); }
+    50%      { transform: scaleY(1); }
+  }
+
+  .animate-equalize {
+    animation: equalize 0.9s ease-in-out infinite;
+    height: 100%;
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-equalize { animation: none; }
+  }
+
+
+  @keyframes shimmer {
+    100% { transform: translateX(200%); }
+  }

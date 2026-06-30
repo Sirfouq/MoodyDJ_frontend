@@ -5,6 +5,10 @@ import { AuthContext } from '@/contexts/AuthContext';
 import VibeInput from '@/components/layout/VibeInput';
 import { PlayerController } from '@/components/layout/PlayerController';
 import { usePlaylist } from '@/hooks/usePlaylist';
+import { TrackCard } from '@/components/layout/TrackCard';
+import { SkeletonTrackCard } from '@/components/layout/SkeletonTrackCard'
+import TracksList from '@/components/layout/TracksList'
+
 
 
 export const HomePage = () => {
@@ -25,13 +29,38 @@ export const HomePage = () => {
       }}></VibeInput>
 
 
-      {`Device Id : ${deviceId}`}
+      {/* <div className="w-full max-w-md my-4">
+        <TrackCard
+          track={{
+            name: 'Studying Afro House Mix',
+            artists: ['Various Artists', 'DJ Test'],
+            uri: 'spotify:track:test',
+            album_image_url: 'https://i.scdn.co/image/ab67616d0000b273e8b066f70c206551210d902b',
+            duration_ms: 240000,
+          }}
+          isPlaying={true}
+          onClick={() => console.log('clicked')}
+        />
+      </div>
+
+      <div className="w-full max-w-md my-4 flex flex-col gap-3">
+        <SkeletonTrackCard />
+        <SkeletonTrackCard />
+        <SkeletonTrackCard />
+      </div> */}
 
       {/* {tracks.map((track) => (
         <p key={track.uri}>
           {track.name} {track.artists}
         </p>
       ))} */}
+
+      <TracksList
+        tracks={tracks}
+        isLoading={isLoading}
+        isPaused={isPaused}
+        current_track={current_track}
+        onClick={(track) => console.log('clicked', track.uri, track.name)} />
 
       {current_track && <PlayerController player={player}
         isActive={isActive}
