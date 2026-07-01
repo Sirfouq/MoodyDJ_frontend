@@ -18,7 +18,8 @@ export const PlayerController = ({ player, isPaused, isActive, current_track, po
 
     const [seekPosition, setSeekPosition] = useState<number | null>(null)
     return (
-        <div className="fixed bottom-0 left-0 w-full z-50 bg-neutral-900 px-4 py-5 flex items-center justify-between">
+        <div className="w-full bg-neutral-900 px-4 py-5 
+  flex items-center justify-between">
             <div className="flex items-center gap-3 w-64">
                 <img src={current_track?.album.images[0].url} className="w-12 h-12 rounded shrink-0" />
                 <div>

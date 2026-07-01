@@ -15,7 +15,7 @@ const TracksList = ({ tracks, isLoading, isPaused, current_track, onClick }: Tra
         <div className="w-full max-w-2xl mx-auto flex
    flex-col gap-3 py-4">
             {isLoading
-                ? Array.from({ length: 5 }).map((_,
+                ? Array.from({ length: 10 }).map((_,
                     i) => (
                     <SkeletonTrackCard key={i} />
                 ))
