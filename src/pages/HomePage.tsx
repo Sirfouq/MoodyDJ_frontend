@@ -12,7 +12,7 @@ export const HomePage = () => {
 
 
   const { access_token } = useContext(AuthContext)
-  const { player, deviceId, isPaused, isActive, current_track, position, volume, seek, adjustVolume } = useSpotifyPlayer(access_token ?? '')
+  const { player, deviceId, isPaused, isActive, current_track, position, volume, seek, adjustVolume, playTrack } = useSpotifyPlayer(access_token ?? '')
   const { tracks, error, isLoading, generatePlaylist } = usePlaylist()
   const hasContent = tracks.length > 0 || isLoading
 
@@ -39,13 +39,12 @@ export const HomePage = () => {
             isPaused={isPaused}
             current_track={current_track}
             onClick={(track) =>
-              console.log('clicked', track.uri, track.name)}
+              playTrack({ uris: tracks.map(t => t.uri), offset: { uri: track.uri } })}
           />
         )}
       </main>
 
-      {/* Floating compact VibeInput — its own 
-  dark card, positioning only here */}
+
       {hasContent && (
         <div className={`fixed left-1/2 
   -translate-x-1/2 z-50 w-full max-w-3xl px-4 
@@ -58,8 +57,7 @@ export const HomePage = () => {
         </div>
       )}
 
-      {/* PlayerController — separate bar glued 
-  to the very bottom */}
+
       {current_track && (
         <div className="fixed bottom-0 left-0 
   right-0 z-40 bg-neutral-900/90 backdrop-blur-md 

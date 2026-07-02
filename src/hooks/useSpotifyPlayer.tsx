@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-
+import { SPOTIFY_PLAYER_ENDPOINTS } from '@/services/config'
 
 const useSpotifyPlayer = (access_token: string) => {
 
@@ -14,6 +14,9 @@ const useSpotifyPlayer = (access_token: string) => {
 
     const playerRef = useRef<Spotify.Player | null>(null)
 
+    type Offset = {
+        uri: string
+    }
 
 
 
@@ -31,7 +34,7 @@ const useSpotifyPlayer = (access_token: string) => {
         window.onSpotifyWebPlaybackSDKReady = () => {
             const token = access_token
             const player = new Spotify.Player({
-                name: 'Web Player',
+                name: 'VibeRider',
                 volume: 0.5,
                 getOAuthToken: cb => { cb(token ?? ''); },
             })
@@ -103,8 +106,33 @@ const useSpotifyPlayer = (access_token: string) => {
 
 
 
-    return { player, deviceId, isPaused, isActive, current_track, position, volume, seek, adjustVolume }
+    const playTrack = async ({ uris, offset }: { uris: string[], offset: Offset }) => {
+        if (!deviceId) return
+        await fetch(`${SPOTIFY_PLAYER_ENDPOINTS.PLAYER}?device_id=${deviceId}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    uris: uris,
+                    offset: offset
+                })
+
+
+            })
+    }
+
+
+
+
+
+
+    return { player, deviceId, isPaused, isActive, current_track, position, volume, seek, adjustVolume, playTrack }
 
 }
 
 export default useSpotifyPlayer
+
+
