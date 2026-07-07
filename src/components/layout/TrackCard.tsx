@@ -1,5 +1,5 @@
 import type { Track } from '@/services/backend_api_comm'
-import React from 'react'
+import { Play, Pause } from 'lucide-react'
 
 type TrackCardProps = {
     track: Track
@@ -7,16 +7,23 @@ type TrackCardProps = {
     onClick: () => void
 }
 
+const formatDuration = (ms: number) => {
+    const totalSec = Math.floor(ms / 1000)
+    const min = Math.floor(totalSec / 60)
+    const sec = totalSec % 60
+    return `${min}:${sec.toString().padStart(2, '0')}`
+}
+
 export const TrackCard = ({ track, isPlaying, onClick }: TrackCardProps) => {
     return (
         <button
             onClick={onClick}
-            className="
+            className={`
                   relative overflow-hidden rounded-lg
                   h-24 w-full text-left cursor-pointer
                   transition-transform hover:scale-[1.01]
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40
-              "
+                  ${isPlaying ? 'ring-2 ring-purple-500 shadow-lg shadow-purple-500/30' : ''}`}
         >
             {/* Layer 1 — Blurred album background */}
             <img
@@ -70,12 +77,25 @@ export const TrackCard = ({ track, isPlaying, onClick }: TrackCardProps) => {
                     alt={track.name}
                     className="h-16 w-16 rounded-md object-cover shadow-md flex-shrink-0"
                 />
+
                 <div className="flex-1 min-w-0">
                     <p className="font-semibold text-white truncate">{track.name}</p>
                     <p className="text-sm text-white/70 truncate">
                         {track.artists.join(', ')}
                     </p>
                 </div>
+
+                <div className='flex items-center gap-4 flex-shrink-0'>
+                    <span className='text-sm text-white/70 tabular-nums'>
+                        {formatDuration(track.duration_ms)}
+                    </span>
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md">
+                        {isPlaying
+                            ? <Pause size={18} className="text-purple-600" fill="currentColor" />
+                            : <Play size={18} className="text-purple-600 ml-0.5" fill="currentColor" />}
+                    </div>
+                </div>
+
             </div>
         </button>
     )

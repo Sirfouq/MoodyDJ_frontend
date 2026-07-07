@@ -5,10 +5,12 @@ import { ArrowRight } from 'lucide-react';
 
 interface inputProps {
   variant?: 'hero' | 'compact'
+  placeholder: string
   onSubmit: (input: string) => void
+
 }
 
-const VibeInput = ({ onSubmit, variant = 'hero' }: inputProps) => {
+const VibeInput = ({ onSubmit, variant = 'hero', placeholder = 'E.g : Adventurous new begginings' }: inputProps) => {
   const [input, setInput] = useState('');
   const isVisible = input.trim() !== '';
 
@@ -28,7 +30,7 @@ const VibeInput = ({ onSubmit, variant = 'hero' }: inputProps) => {
     <>
       {variant === 'hero' ? (
         <div className='relative w-full max-w-3xl'>
-          <Textarea placeholder='How are you feeling today ?'
+          <Textarea placeholder={placeholder}
             onChange={(e) => setInput(e.target.value)}
             value={input}
             onKeyDown={handleKeyDown} />

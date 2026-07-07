@@ -108,6 +108,7 @@ const useSpotifyPlayer = (access_token: string) => {
 
     const playTrack = async ({ uris, offset }: { uris: string[], offset: Offset }) => {
         if (!deviceId) return
+
         await fetch(`${SPOTIFY_PLAYER_ENDPOINTS.PLAYER}?device_id=${deviceId}`,
             {
                 method: 'PUT',
