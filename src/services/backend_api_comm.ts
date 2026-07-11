@@ -20,7 +20,6 @@ export const check_auth_status=async () : Promise<AuthStatusProps> =>{
             }   
         )
         const data = await response.json() as AuthStatusProps
-        console.log('Auth status :',data )
         return data
     }
     catch(error:any){

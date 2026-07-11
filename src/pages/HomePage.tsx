@@ -13,8 +13,8 @@ import HeroTitle from '@/components/layout/HeroTitle';
 export const HomePage = () => {
 
 
-  const { access_token } = useContext(AuthContext)
-  const { player, deviceId, isPaused, isActive, current_track, position, volume, seek, adjustVolume, playTrack } = useSpotifyPlayer(access_token ?? '')
+  const { isLoggedIn } = useContext(AuthContext)
+  const { player, isPaused, isActive, current_track, position, volume, playbackError, seek, adjustVolume, playTrack } = useSpotifyPlayer(isLoggedIn)
   const { tracks, error, isLoading, lastVibe, generatePlaylist } = usePlaylist()
   const hasContent = tracks.length > 0 || isLoading
 
@@ -24,7 +24,7 @@ export const HomePage = () => {
   return (
     <div className="h-screen flex flex-col bg-gradient-to-br from-indigo-0 to-indigo-100">
 
-      {/* Nav bar — placeholder, real component later */}
+      {/*  HERO AREA   */}
       <Navbar links={Nav_links} />
       {hasContent && (
         <div className="fixed left-0 top-0 h-full w-16 hidden xl:flex items-center justify-center pointer-events-none z-10">
@@ -38,12 +38,19 @@ export const HomePage = () => {
         <section className="px-6 py-12 pb-12 max-w-4xl mx-auto">
           <HeroTitle title='How does your soul feel right now ? ' />
           <VibeInput
+            placeholder='How does your soul feel right now ?'
             variant="hero"
             onSubmit={(input) => generatePlaylist(input)}
           />
+
+          {error && (
+            <p className='mt-3 text-sm text-red-500'>
+              {error.message}
+            </p>
+          )}
         </section>
 
-        {/* Curated section + inner-scroll list */}
+        {/* GENERATD LIST AREA*/}
         {hasContent && (
           <section className="px-6 max-w-4xl mx-auto pb-2">
             <div className="mb-4">
@@ -69,7 +76,7 @@ export const HomePage = () => {
         )}
       </div>
 
-      {/* Player — fixed, frosted */}
+      {/* PLAYER AREA  */}
       {current_track && (
         <div className="z-40 shrink-0 bg-white/95 backdrop-blur-sm border-t border-black/5">
           <PlayerController
@@ -83,6 +90,14 @@ export const HomePage = () => {
             adjustVolume={adjustVolume}
           />
         </div>
+
+
+      )}
+
+      {playbackError && (
+        <p className='mt-3 text-sm text-red-500'>
+          {playbackError}
+        </p>
       )}
 
     </div>

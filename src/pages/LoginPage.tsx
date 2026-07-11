@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from '../services/config';
 //     onClick: () => void
 // }
 
-export const LoginCard = () => {
+export const LoginPage = () => {
 
     return (
 

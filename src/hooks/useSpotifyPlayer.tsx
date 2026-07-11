@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { SPOTIFY_PLAYER_ENDPOINTS } from '@/services/config'
+import { check_auth_status } from '@/services/backend_api_comm'
 
-const useSpotifyPlayer = (access_token: string) => {
+const useSpotifyPlayer = (isLoggedIn: boolean) => {
 
 
     const [player, setPlayer] = useState<Spotify.Player | null>(null)
@@ -11,6 +12,7 @@ const useSpotifyPlayer = (access_token: string) => {
     const [isPaused, setIsPaused] = useState(false)
     const [position, setPosition] = useState(0)
     const [volume, setVolume] = useState(0.5)
+    const [playbackError, setPlaybackError] = useState<string | null>(null)
 
     const playerRef = useRef<Spotify.Player | null>(null)
 
@@ -22,7 +24,7 @@ const useSpotifyPlayer = (access_token: string) => {
 
     useEffect(() => {
 
-        if (!access_token) return
+        if (!isLoggedIn) return
 
         if (!document.querySelector('script[src="https://sdk.scdn.co/spotify-player.js"]')) {
             const script = document.createElement("script");
@@ -32,28 +34,33 @@ const useSpotifyPlayer = (access_token: string) => {
         }
 
         window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = access_token
             const player = new Spotify.Player({
-                name: 'VibeRider',
+                name: 'MELODYSSEY',
                 volume: 0.5,
-                getOAuthToken: cb => { cb(token ?? ''); },
+                getOAuthToken: async cb => {
+                    const token = (await check_auth_status()).access_token
+                    if (token) cb(token)
+                },
             })
 
             player.addListener('ready', ({ device_id }) => {
                 console.log(device_id)
                 setDeviceId(device_id)
+                setPlaybackError(null)
             })
             player.addListener('not_ready', ({ device_id }) => {
                 console.log('Device ID has gone offline', device_id);
             });
 
             // player.addListener('initialization_error', ({ message }) => {
-            //     console.error(message);
+            //     console.error(message)
             // });
 
-            // player.addListener('authentication_error', ({ message }) => {
-            //     console.error(message);
-            // });
+            player.addListener('authentication_error', ({ message }) => {
+                console.error(message)
+                setPlaybackError('Spotify authentication failed. Try refreshing the page')
+
+            });
             player.addListener('player_state_changed', (state => {
 
                 if (!state) {
@@ -70,9 +77,11 @@ const useSpotifyPlayer = (access_token: string) => {
 
             }));
 
-            // player.addListener('account_error', ({ message }) => {
-            //     console.error(message);
-            // });
+            player.addListener('account_error', ({ message }) => {
+                console.error(message)
+                setPlaybackError('Spotify Premium required for playback.')
+
+            });
 
 
             playerRef.current = player
@@ -81,7 +90,7 @@ const useSpotifyPlayer = (access_token: string) => {
         }
         return () => { playerRef.current?.disconnect() }
 
-    }, [access_token])
+    }, [isLoggedIn])
 
 
     useEffect(() => {
@@ -108,21 +117,39 @@ const useSpotifyPlayer = (access_token: string) => {
 
     const playTrack = async ({ uris, offset }: { uris: string[], offset: Offset }) => {
         if (!deviceId) return
+        try {
+            const token = (await check_auth_status()).access_token
+            const response = await fetch(`${SPOTIFY_PLAYER_ENDPOINTS.PLAYER}?device_id=${deviceId}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        uris: uris,
+                        offset: offset
+                    })
 
-        await fetch(`${SPOTIFY_PLAYER_ENDPOINTS.PLAYER}?device_id=${deviceId}`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${access_token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    uris: uris,
-                    offset: offset
+
                 })
+            if (response.ok) {
+                setPlaybackError(null)
 
+            }
+            else if (response.status === 403) {
+                setPlaybackError('Spotify Premium required for playback.')
 
-            })
+            }
+            else {
+                setPlaybackError(`Playback failed (${response.status}) - try again.`)
+
+            }
+        }
+        catch {
+            setPlaybackError('Could not reach the server . Check your connection .')
+
+        }
     }
 
 
@@ -130,7 +157,7 @@ const useSpotifyPlayer = (access_token: string) => {
 
 
 
-    return { player, deviceId, isPaused, isActive, current_track, position, volume, seek, adjustVolume, playTrack }
+    return { player, deviceId, isPaused, isActive, current_track, position, volume, playbackError, seek, adjustVolume, playTrack }
 
 }
 

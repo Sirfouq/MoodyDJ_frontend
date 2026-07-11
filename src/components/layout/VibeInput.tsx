@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 
 interface inputProps {
   variant?: 'hero' | 'compact'
-  placeholder: string
+  placeholder?: string
   onSubmit: (input: string) => void
 
 }
@@ -16,6 +16,8 @@ const VibeInput = ({ onSubmit, variant = 'hero', placeholder = 'E.g : Adventurou
 
 
   const handleSubmit = () => {
+
+    if (!input.trim()) return
     onSubmit(input)
   }
 
