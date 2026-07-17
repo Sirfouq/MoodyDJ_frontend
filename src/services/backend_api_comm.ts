@@ -12,6 +12,16 @@ export interface Track{
     duration_ms : number
 }
 
+export interface UserProfile  {
+    account_id : string,
+    display_name : string,
+    external_urls : {spotify : string}
+    images : {url: string}[]
+    type : string
+    uri : string
+}
+
+
 export const check_auth_status=async () : Promise<AuthStatusProps> =>{
     try{
         const response = await fetch(API_ENDPOINTS.AUTH_STATUS,
@@ -28,6 +38,28 @@ export const check_auth_status=async () : Promise<AuthStatusProps> =>{
 
     }
     
+}
+
+export const fetch_profile = async () : Promise<UserProfile>=>{
+
+        const response = await fetch(API_ENDPOINTS.ME, 
+            {
+                credentials: 'include'
+            }
+        )
+        if (!response.ok){
+            throw new Error(`Failed to fetch , ${response.status}`)
+        }
+        const profile =  await response.json()
+        return profile
+    }
+
+export const logout = async (): Promise<void> => {
+    const response = await fetch(API_ENDPOINTS.LOGOUT, {
+        method: 'POST',
+        credentials: 'include',
+    })
+    if (!response.ok) throw new Error(`Http Error: ${response.status}`)
 }
 
 export const generate_playlist = async(user_input : string,

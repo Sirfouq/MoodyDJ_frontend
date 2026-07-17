@@ -31,7 +31,7 @@ const VibeInput = ({ onSubmit, variant = 'hero', placeholder = 'E.g : Adventurou
   return (
     <>
       {variant === 'hero' ? (
-        <div className='relative w-full max-w-3xl'>
+        <div className='relative w-full max-w-3xl mx-auto'>
           <Textarea placeholder={placeholder}
             onChange={(e) => setInput(e.target.value)}
             value={input}

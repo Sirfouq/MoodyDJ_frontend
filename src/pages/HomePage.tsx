@@ -8,6 +8,7 @@ import TracksList from '@/components/layout/TracksList'
 import { Navbar } from '@/components/layout/Navbar'
 import { Nav_links } from '@/router';
 import HeroTitle from '@/components/layout/HeroTitle';
+import useProfile from '@/hooks/useProfile';
 
 
 export const HomePage = () => {
@@ -16,6 +17,7 @@ export const HomePage = () => {
   const { isLoggedIn } = useContext(AuthContext)
   const { player, isPaused, isActive, current_track, position, volume, playbackError, seek, adjustVolume, playTrack } = useSpotifyPlayer(isLoggedIn)
   const { tracks, error, isLoading, lastVibe, generatePlaylist } = usePlaylist()
+  const { profileLoading, profile } = useProfile(isLoggedIn)
   const hasContent = tracks.length > 0 || isLoading
 
 
@@ -25,7 +27,9 @@ export const HomePage = () => {
     <div className="h-screen flex flex-col bg-gradient-to-br from-indigo-0 to-indigo-100">
 
       {/*  HERO AREA   */}
-      <Navbar links={Nav_links} />
+      <Navbar links={Nav_links}
+        profile={profile}
+        profileLoading={profileLoading} />
       {hasContent && (
         <div className="fixed left-0 top-0 h-full w-16 hidden xl:flex items-center justify-center pointer-events-none z-10">
           <p className="-rotate-90 whitespace-nowrap text-4xl font-display  text-slate-600 tracking-tight" aria-hidden="true">

@@ -4,7 +4,11 @@ const SPOTIFY_PLAYER_BASE = 'https://api.spotify.com'
 export const API_ENDPOINTS = {
   AUTH_STATUS: `${API_BASE_URL}/auth/status`,
   LOGIN: `${API_BASE_URL}/login`,
-  GENERATE: `${API_BASE_URL}/generate`
+  LOGOUT : `${API_BASE_URL}/logout`,
+  GENERATE: `${API_BASE_URL}/generate`,
+  ME : `${API_BASE_URL}/me`
+
+ 
   
 }
 
