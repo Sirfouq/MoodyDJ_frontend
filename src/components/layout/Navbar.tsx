@@ -47,7 +47,7 @@ export const Navbar = ({ links, profile, profileLoading }: NavbarProps) => {
                 {profile ? (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <button className="w-8 h-8 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center">
+                            <button className="w-8 h-8 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center cursor-pointer">
                                 {profile.images[0]?.url ? (
                                     <img
                                         src={profile.images[0].url}
@@ -62,12 +62,12 @@ export const Navbar = ({ links, profile, profileLoading }: NavbarProps) => {
                             </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuLabel className='flex flex-col'>
+                            <DropdownMenuLabel>
                                 <span className='text-xs font-normal text-gray-500'>Signed in as: </span>
                                 {profile.display_name}
                             </DropdownMenuLabel>
                             <DropdownMenuItem
-                                className='text-md text-indigo-500'
+                                className='text-md text-indigo-500 cursor-pointer'
                                 onClick={handleLogout}>
                                 Log out
                             </DropdownMenuItem>
