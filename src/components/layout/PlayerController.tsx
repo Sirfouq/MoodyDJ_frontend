@@ -1,11 +1,9 @@
 import { Play, Pause, SkipBack, SkipForward } from "lucide-react"
 import { Slider } from "../ui/slider"
-import { Button } from "../ui/button"
 import { useState } from "react"
 interface PlayerControllerProps {
     player: Spotify.Player | null,
     isPaused: boolean,
-    isActive: boolean,
     current_track: Spotify.Track | null
     position: number
     volume: number
@@ -14,7 +12,7 @@ interface PlayerControllerProps {
 }
 
 
-export const PlayerController = ({ player, isPaused, isActive, current_track, position, volume, seek, adjustVolume }: PlayerControllerProps) => {
+export const PlayerController = ({ player, isPaused, current_track, position, volume, seek, adjustVolume }: PlayerControllerProps) => {
 
     const [seekPosition, setSeekPosition] = useState<number | null>(null)
     return (

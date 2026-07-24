@@ -15,7 +15,7 @@ export const HomePage = () => {
 
 
   const { isLoggedIn } = useContext(AuthContext)
-  const { player, isPaused, isActive, current_track, position, volume, playbackError, seek, adjustVolume, playTrack } = useSpotifyPlayer(isLoggedIn)
+  const { player, isPaused, current_track, position, volume, playbackError, seek, adjustVolume, playTrack } = useSpotifyPlayer(isLoggedIn)
   const { tracks, error, isLoading, lastVibe, generatePlaylist } = usePlaylist()
   const { profileLoading, profile } = useProfile(isLoggedIn)
   const hasContent = tracks.length > 0 || isLoading
@@ -85,7 +85,6 @@ export const HomePage = () => {
         <div className="z-40 shrink-0 bg-white/95 backdrop-blur-sm border-t border-black/5">
           <PlayerController
             player={player}
-            isActive={isActive}
             current_track={current_track}
             isPaused={isPaused}
             position={position}

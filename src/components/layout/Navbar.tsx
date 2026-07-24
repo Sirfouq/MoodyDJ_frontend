@@ -66,6 +66,7 @@ export const Navbar = ({ links, profile, profileLoading }: NavbarProps) => {
                                 <span className='text-xs font-normal text-gray-500'>Signed in as: </span>
                                 {profile.display_name}
                             </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className='text-md text-indigo-500 cursor-pointer'
                                 onClick={handleLogout}>
