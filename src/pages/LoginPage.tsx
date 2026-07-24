@@ -1,6 +1,7 @@
 import { SpotifyIcon } from '@/components/icons/SpotifyIcon';
 import { API_ENDPOINTS } from '../services/config';
 import { useState } from 'react';
+import { useAuthError } from '@/hooks/useAuthError';
 
 // interface LoginCardProps {
 //     onClick: () => void
@@ -10,6 +11,7 @@ export const LoginPage = () => {
     const [spotlight, setSpotlight] = useState({ x: 50, y: 50 })
     const [isHovering, setIsHovering] = useState(false)
     const [tilt, setTilt] = useState({ x: 0, y: 0 })
+    const authError = useAuthError()
     return (
 
         <div className="relative overflow-hidden  bg-indigo-100/50 backdrop-blur-md border border-indigo-200/60 rounded-2xl shadow-xl p-8 sm:p-12 w-full max-w-md text-center animate-in fade-in zoom-in-95 duration-500"
@@ -45,6 +47,10 @@ export const LoginPage = () => {
                 <p className="text-gray-600 mb-8">
                     Connect with your Spotify Account to continue.
                 </p>
+
+                {authError && (
+                    <p className="text-sm text-red-500 mb-4">{authError}</p>
+                )}
                 <LoginButton />
             </div>
         </div>
